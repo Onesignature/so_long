@@ -1,59 +1,52 @@
-### so_long - First graphical 42 project!
-```md
+# so_long
 
-## About
+A 42 graphical project: a small 2D game built with the **MiniLibX** library where the player navigates a maze, collects items, and reaches the exit.
 
-**so_long** is a 42 project that implements a simple 2D game using the `mlx` (MiniLibX) library. The game involves navigating a character through a maze to collect items and reach a goal while avoiding obstacles.
+![screenshot](screenshot.png)
 
 ## Features
 
-- **Maze Generation**: Load and display a maze from a map file.
-- **Character Movement**: Control the character using keyboard inputs.
-- **Item Collection**: Collect items and reach the goal to complete the level.
-- **Graphics**: Basic graphics using MiniLibX for rendering.
+- Loads and parses a maze from a `.ber` map file
+- Keyboard-controlled character movement
+- Collectible items + exit unlocking
+- Tile-based rendering via MiniLibX
+- Map validation, including a DFS path-checking algorithm to confirm the map is solvable
 
-## Installation
+## Build
 
-1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/Onesignature/so_long.git
-    cd so_long
-    ```
+```bash
+make
+```
 
-2. **Install MiniLibX**:
-   Follow the installation instructions for MiniLibX provided in the [MiniLibX documentation](https://harm-smits.github.io/42docs/libs/minilibx/).
+Requires **MiniLibX** — see the [MiniLibX docs](https://harm-smits.github.io/42docs/libs/minilibx/) for installation.
 
-3. **Build the project:**
-    ```bash
-    make
-    ```
+## Run
 
-## Usage
-
-Run the game with:
 ```bash
 ./so_long maps/valid/map.ber
 ```
 
-Replace `map.ber` with your map file. The map file should use the following characters:
-- `1` for walls
-- `0` for empty space
-- `C` for collectible items
-- `E` for the exit
-- `P` for the player’s starting position
+## Map format
 
-## Example
+A valid `.ber` file uses the following tiles:
 
-```bash
-$ ./so_long map.ber
-```
-## Maps
-![screenshot](screenshot.png)
+| Char | Meaning |
+|---|---|
+| `1` | Wall |
+| `0` | Empty space |
+| `C` | Collectible item |
+| `E` | Exit |
+| `P` | Player start |
 
-## How It Works
+The map must be rectangular, fully enclosed by walls, and contain exactly one `P`, at least one `C`, and at least one `E`.
 
-1. **Map Loading**: Parses the map file to create the game world.
-2. **Rendering**: Uses MiniLibX to draw the maze and game elements.
-3. **Controls**: Moves the character based on keyboard input and updates the game state.
-4. **Completion**: Checks for item collection and goal achievement to determine game completion.
-```
+## Layout
+
+- `so_long.c`, `so_long.h` — entry point and headers
+- `parser.c`, `parser2.c` — map file parsing and validation
+- `dfs.c` — depth-first path check (confirms `P` can reach every `C` and the `E`)
+- `keyhooks.c` — keyboard input handling
+- `utils/` — helper functions
+- `img/` — sprite assets
+- `maps/` — sample valid and invalid maps
+- `mlx/` — MiniLibX
